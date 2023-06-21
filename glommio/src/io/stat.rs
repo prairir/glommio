@@ -14,6 +14,15 @@ pub struct Stat {
     /// the filesystem.
     pub file_size: u64,
 
+    /// The file mode as a 16 bit unsigned int.
+    pub mode: u16,
+
+    /// The user ID of the file.
+    pub uid: u32,
+
+    /// The group ID of the file.
+    pub gid: u32,
+
     /// This returns how many bytes were allocated on the filesystem, ignoring
     /// sparse regions. The typical minimum granularity for filesystem
     /// allocation is 512 bytes although some filesystems may allocate more
@@ -29,6 +38,9 @@ impl From<Statx> for Stat {
     fn from(s: Statx) -> Self {
         Self {
             file_size: s.stx_size,
+            mode: s.stx_mode,
+            uid: s.stx_uid,
+            gid: s.stx_gid,
             allocated_file_size: s.stx_blocks * 512,
             fs_cluster_size: s.stx_blksize,
         }
